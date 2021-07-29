@@ -147,6 +147,7 @@ namespace InvoiceGenerationTestProject1
                 Assert.AreEqual(ex.Message, expected);
             }
         }
+        //UC3:Test method for normal rides
         [TestMethod]
         [TestCategory("Invoice Summary for normal rides")]
         public void TestMethodToCheckInvoiceSummay()
@@ -154,10 +155,10 @@ namespace InvoiceGenerationTestProject1
             CalculateInvoice calculate = new CalculateInvoice(CalculateInvoice.RideType.Normal);
             Ride[] ride = { new Ride(3, 5.0), new Ride(6, 7.0) };
             string actual = calculate.InvoiceSummary(ride);
-            string expected = "\nNo of rides: 0 \nTotal Fare: 129 \nAverage Fare: 64.5";
+            string expected = "\nNo of rides: 2 \nTotal Fare: 129 \nAverage Fare: 64.5";
             Assert.AreEqual(actual, expected);
         }
-
+        //UC3.3:Test method for premium rides
         [TestMethod]
         [TestCategory("Invoice Summary for premium rides")]
         public void TestMethodToCheckInvoiceSummayForPremiumRides()
@@ -168,6 +169,38 @@ namespace InvoiceGenerationTestProject1
             string expected = "\nNo of rides: 2 \nTotal Fare: 198 \nAverage Fare: 99";
             Assert.AreEqual(actual, expected);
         }
+        //UC:4test method to search for particular userID repos
+        [TestMethod]
+        [TestCategory("Invoice for user Id")]
+        public void SearchInvoiceForUserId()
+        {
+            RideRepository ride = new RideRepository();
+            Ride[] rides123 = { new Ride(3, 5.0), new Ride(6, 7.0) };
+            Ride[] rides124 = { new Ride(4, 6.0), new Ride(7, 8.0) };
+            ride.AddToDictionary("123",rides123);
+            ride.AddToDictionary("124",rides124);
+            string actual = ride.Search("123");
+            string expected = "\nNormal\nNo of rides: 2 \nTotal Fare: 129 \nAverage Fare: 64.5\nPremium\nNo of rides: 2 \nTotal Fare: 198 \nAverage Fare: 99";
+            Assert.AreEqual(actual, expected);
+
+        }
+        //Test case for invalid user Id
+        [TestMethod]
+        [TestCategory("Invalid userID search")]
+        public void SearchForInvalidUserID()
+        {
+            RideRepository ride = new RideRepository();
+            Ride[] rides123 = { new Ride(3, 5.0), new Ride(6, 7.0) };
+            Ride[] rides124 = { new Ride(4, 6.0), new Ride(7, 8.0) };
+            ride.AddToDictionary("123", rides123);
+            ride.AddToDictionary("124", rides124);
+            string actual = ride.Search("125");
+            string expected = "Not found";
+            Assert.AreEqual(actual, expected);
+
+        }
+
+
 
     }
 }
