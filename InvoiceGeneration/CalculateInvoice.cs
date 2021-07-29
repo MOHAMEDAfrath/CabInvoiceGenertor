@@ -26,6 +26,11 @@ namespace InvoiceGeneration
                 costPerKm = 10;
                 costPerMin = 1;
                 minimumFare = 5;
+            }else if (rideType.Equals(RideType.Premium))
+            {
+                costPerKm = 15;
+                costPerMin = 2;
+                minimumFare = 20;
             }
             
         }
