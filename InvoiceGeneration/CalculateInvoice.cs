@@ -36,11 +36,8 @@ namespace InvoiceGeneration
         }
         //calculates the fare
         public double CalculateFare(int time, double distance)
-
         {
             double totalFare = 0;
-
-
             if (distance <= 0)
             {
                 throw new InvoiceCustomException(InvoiceCustomException.ExceptionType.INVALID_DISTANCE, "Distance should be greater than zero");
@@ -49,11 +46,22 @@ namespace InvoiceGeneration
             {
                 throw new InvoiceCustomException(InvoiceCustomException.ExceptionType.INVALID_TIME, "Time should be greater than zero");
             }
-
-
             totalFare = distance * costPerKm + time * costPerMin;
             return Math.Max(minimumFare, totalFare);
 
+        }
+        public double CalculateAggregateFare(Ride[] rides)
+        {
+            double aggregateFare = 0;
+            if(rides.Length == 0)
+            {
+                throw new InvoiceCustomException(InvoiceCustomException.ExceptionType.INVALID_RIDE_COUNT, "Ivalid Ride List");
+            }
+            foreach(var ride in rides)
+            {
+                aggregateFare += CalculateFare(ride.time,ride.distance);
+            }
+            return aggregateFare;
         }
 
     }
